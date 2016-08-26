@@ -140,8 +140,8 @@ void event_handle (int sd, const u_char *data, struct ETH *neweth, struct IP *ne
 
 	newtcp->th_sport = tcph->th_dport; // 송신자와 수신자 port 바꾸기
 	newtcp->th_dport = tcph->th_sport;
-	newtcp->th_seq = tcph->th_ack + (iph->ip_len-IP_HL(iph)-TH_OFF(tcph)); // 송신자와 수신자가 seq ack 바꾸고 계산
-	newtcp->th_ack = tcph->th_seq;
+	newtcp->th_seq = tcph->th_ack; // 송신자와 수신자가 seq ack 바꾸고 계산
+	newtcp->th_ack = tcph->th_seq + (iph->ip_len-IP_HL(iph)-TH_OFF(tcph));
 	newtcp->th_offx2 = '\x14'; // 20 바이트 고정
 	newtcp->th_flags = TH_FIN; //
 	newtcp->th_win = tcph->th_win; // 그대로 써도 알아서 tcp window 크기 조절
